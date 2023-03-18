@@ -1,1 +1,2 @@
-g++ "$1" -o "$2"
+cp -f "$1" /tmp/code.cpp
+g++ /tmp/code.cpp -o "$2"
