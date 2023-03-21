@@ -9,6 +9,7 @@ RUN gcc compare.c -o /tmp/compare -O4 -static
 
 WORKDIR /tmp
 COPY run.sh /tmp/run.sh
+COPY run.sh /bin/script
 COPY build.sh /tmp/build.sh
 
-ENTRYPOINT ["./run.sh"]
+RUN chmod +x /tmp/run.sh /bin/script /tmp/build.sh
