@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get -y update --fix-missing && apt-get -y upgrade
