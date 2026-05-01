@@ -1,6 +1,13 @@
 from os.path import join, dirname
 import ast
 
+ALLOWED_MODULES = [
+    'qiskit',
+    'numpy',
+    'qiskit.circuit.gate',
+    'qiskit.quantum_info',
+]
+
 builtin_functions = set(name for name in dir(__builtins__) if name.islower())
 builtin_functions.remove('float')
 builtin_functions.remove('range')
@@ -24,16 +31,16 @@ def check_code():
     for node in tree.body:
         if isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name not in ['qiskit', 'numpy', 'qiskit.circuit.gate']:
+                if alias.name not in ALLOWED_MODULES:
                     raise AssertionError(f"Please do not import the module '{alias.name}'")
 
         if isinstance(node, ast.ImportFrom):
-            if node.module not in ['qiskit', 'numpy', 'qiskit.circuit.gate']:
+            if node.module not in ALLOWED_MODULES:
                 raise AssertionError(f"Please do not import the module '{node.module}'")
 
     # Check if the code contains only one function definition with the name "solve"
 
-    func_defs = [node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
+    func_defs = [node for node in tree.body if isinstance(node, ast.FunctionDef)]
 
     assert len(func_defs) <= 2, "Do not define more than two functions in the code"
 
